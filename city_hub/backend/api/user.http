@@ -1,0 +1,95 @@
+### USER
+
+### Registrar usuario  (HECHO)
+### Iniciar sesión ususario -> token de Usuario (HECHO)
+### Modifcar info ususario -> Ususario -> token de Ususario (HECHO)
+### Borrar usuario -> Uusario -> token de Usuario (HECHO)
+### Obtener usuario por correo -> (HECHO)
+
+################################################################################################################
+
+### Obtener usuarios
+GET http://localhost:3001/api/user HTTP/1.1
+
+### Obtener usuarios
+GET http://localhost:3001/api/user/filtered HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjMzYjJlMzFiMzJkYzBkYTU5YmQ2ZmUiLCJDSUYiOiJBOTg3NjU0MzAiLCJpYXQiOjE3MTQ2NjQxNjgsImV4cCI6MTc0NjIyMTc2OH0.gDVx78Zv_BqAEK71lhLQ7Q3tvqHoOQVtrDEU6l3ixbM
+
+### Obtener un usuario
+GET http://localhost:3001/api/user/usuario1@cityhub.com HTTP/1.1
+
+### Creación de usuarios -> Registrar usuario
+### Usuario 1
+POST http://localhost:3001/api/user/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "usuario1",
+    "correo": "usuario1@cityhub.com",
+    "password": "usuario123",
+    "edad": 25,
+    "ciudad": "Barcelona",
+    "intereses": ["Tecnología", "Viajes"],
+    "ofertas": true
+}
+
+### Usuario 2
+POST http://localhost:3001/api/user/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "usuario2",
+    "correo": "usuario2@cityhub.com",
+    "password": "usuario456",
+    "edad": 30,
+    "ciudad": "Sevilla",
+    "intereses": ["Cocina", "Música"],
+    "ofertas": false
+}
+
+### Usuario 3
+POST http://localhost:3001/api/user/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "usuario3",
+    "correo": "usuario3@cityhub.com",
+    "password": "usuario789",
+    "edad": 22,
+    "ciudad": "Valencia",
+    "intereses": ["Arte", "Moda"],
+    "ofertas": true
+}
+
+### Login de un admin
+POST http://localhost:3001/api/user/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "correo": "admin1@cityhub.com",
+    "password": "admin123"
+}
+
+### Login de un usuario
+### Usuario 1
+POST http://localhost:3001/api/user/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "correo": "usuario1@cityhub.com",
+    "password": "usuario123"
+}
+
+### Modificar usuario
+### Usuario 1
+PATCH http://localhost:3001/api/user/usuario1@cityhub.com HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNiMjdkNzg0MDRjODU0NjFmNTgwMmMiLCJyb2wiOlsidXNlciJdLCJpYXQiOjE3MTUxNTI4NzIsImV4cCI6MTc0NjcxMDQ3Mn0.zxaEHdRA9GI5XVz-16wxV2vxPGpGK_RQzJm9A9pzUtQ
+
+{
+    "ciudad": "Madrid"
+}
+
+### Borrar un usuario
+DELETE http://localhost:3001/api/user/usuario1@cityhub.com HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjMzYWYwNjc2ZmZkMjRiZWVkMTliYWMiLCJyb2wiOlsidXNlciJdLCJpYXQiOjE3MTUxNTE0NzksImV4cCI6MTc0NjcwOTA3OX0.CiouF-TF7QJLi06Szfun65L_sQUpzHOwD3bhNc_iNks

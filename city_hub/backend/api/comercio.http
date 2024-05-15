@@ -1,0 +1,195 @@
+### COMERCIO
+
+### Registrar comercio -> Admin -> token de Admin (HECHO)
+### Iniciar sesión comercio -> token de Comercio (HECHO)
+### Modifcar info comercio -> Comercio -> token de Comercio (HECHO)
+### Borrar comercio -> Comercio -> token de Comercio (HECHO)
+### Subir título, resumen, texto y/o fotos comercio -> Comercio -> token de Comercio -> (HECHO) -> excepto fotos
+### Subir valoración y opinión comercio -> User -> token de User (HECHO)
+### Buscar comercio por CIF -> (HECHO)
+### Buscar comercio por Ciudad -> (HECHO) -> opción de ordenar por Scoring
+### Buscar comercio por Actividad -> (HECHO) -> opción de ordenar por Scoring
+
+################################################################################################################
+
+### Obtener la lista de comercios y, opcionalmente (vía parámetro query,) ordenados por el CIF ascendentemente.
+### Ordenado por defecto (creación)
+GET http://localhost:3001/api/comercios HTTP/1.1
+
+### Ordenado por CIF
+GET http://localhost:3001/api/comercios?orderByCIF=true HTTP/1.1
+
+### Obtener un comercio por su CIF -> CommerceSearch
+### Comecrico La Esquina del Sabor
+GET http://localhost:3001/api/comercios/CIF/A98765430 HTTP/1.1
+
+### Comercio no encontrado
+GET http://localhost:3001/api/comercios/CIF/A98765439 HTTP/1.1
+
+### Obtener comercios por su Actividad
+GET http://localhost:3001/api/comercios/Actividad/Alimentación HTTP/1.1
+
+### Obtener comercios por Ciudad
+GET http://localhost:3001/api/comercios/Ciudad/Madrid HTTP/1.1
+
+### Iniciar sesion
+### Comercio La Esqiuna del Sabor
+POST http://localhost:3001/api/comercios/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "correo": "info@esquinadelsabor.com",
+    "password": "EsquinaSabor"
+}
+
+### Guardar un comercio -> Registrar un comercio
+### Comercio La Esquina del Sabor
+POST http://localhost:3001/api/comercios/register HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJkNDRjMjEwMTM0Yjk0ZGRiZTQ0N2MiLCJyb2wiOlsiYWRtaW4iXSwiaWF0IjoxNzE0Mjk3MDg0LCJleHAiOjE3NDU4NTQ2ODR9.dKRTE0oI6xW49u5l4qBIoOwyJtEQwyWJA7krgIuqVBM
+
+{
+    "nombre": "La Esquina del Sabor",
+    "CIF": "A98765430",
+    "direccion": "Avenida de los Sabores, 123",
+    "correo": "info@esquinadelsabor.com",
+    "password": "EsquinaSabor",
+    "telefono": 987654321
+}
+
+### Comercio Moda Urbana
+POST http://localhost:3001/api/comercios/register HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJkNDRjMjEwMTM0Yjk0ZGRiZTQ0N2MiLCJyb2wiOlsiYWRtaW4iXSwiaWF0IjoxNzE0Mjk3MDg0LCJleHAiOjE3NDU4NTQ2ODR9.dKRTE0oI6xW49u5l4qBIoOwyJtEQwyWJA7krgIuqVBM
+
+{
+    "nombre": "Moda Urbana",
+    "CIF": "B12345679",
+    "direccion": "Calle de la Moda, 456",
+    "correo": "info@modaurbana.com",
+    "password": "ModaUrbana",
+    "telefono": 987654321
+}
+
+### Comercio La Casa del Café
+POST http://localhost:3001/api/comercios/register HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJkNDRjMjEwMTM0Yjk0ZGRiZTQ0N2MiLCJyb2wiOlsiYWRtaW4iXSwiaWF0IjoxNzE0Mjk3MDg0LCJleHAiOjE3NDU4NTQ2ODR9.dKRTE0oI6xW49u5l4qBIoOwyJtEQwyWJA7krgIuqVBM
+
+{
+    "nombre": "La Casa del Café",
+    "CIF": "A18765432",
+    "direccion": "Calle del Aroma, 123",
+    "correo": "info@lacasadelcafe.com",
+    "password": "CasaCafe",
+    "telefono": 987654321
+}
+
+### Login de un comercio
+### Comercio La Esquina del Sabor
+POST http://localhost:3001/api/comercios/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "correo": "info@esquinadelsabor.com",
+    "password": "EsquinaSabor"
+}
+
+### Modificar un comercio a partir de su CIF
+### Comercio La Esquina del Sabor
+PATCH http://localhost:3001/api/comercios/A98765430 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjMzYjJlMzFiMzJkYzBkYTU5YmQ2ZmUiLCJDSUYiOiJBOTg3NjU0MzAiLCJpYXQiOjE3MTQ2NjQxNjgsImV4cCI6MTc0NjIyMTc2OH0.gDVx78Zv_BqAEK71lhLQ7Q3tvqHoOQVtrDEU6l3ixbM
+
+{   
+    "ciudad": "Madrid",
+    "direccion": "Avenida de los Sabores, 12",
+    "actividad": ["Alimentación", "Pintar tazas"]
+}
+
+### Comercio que no existe
+PATCH http://localhost:3001/api/comercios/A98765432 HTTP/1.1
+Content-Type: application/json
+
+{   
+    "direccion": "Avenida de los Sabores, 12"
+}
+
+### Subir informacion de un comercio
+### Comercio La Esquina del Sabor
+PATCH http://localhost:3001/api/comercios/info/A98765430 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjMzYjJlMzFiMzJkYzBkYTU5YmQ2ZmUiLCJDSUYiOiJBOTg3NjU0MzAiLCJpYXQiOjE3MTQ2NjQxNjgsImV4cCI6MTc0NjIyMTc2OH0.gDVx78Zv_BqAEK71lhLQ7Q3tvqHoOQVtrDEU6l3ixbM
+
+{   
+    "titulo": "Cafetería con estilo",
+    "resumen": "Una cafetería para poder disfrutar",
+    "textos": "Ven a conocernos"
+}
+
+### Borrar un comercio a partir de su CIF, y permite elegir entre un borrado lógico o físico (vía parámetro query)
+### Borrado físico (por defecto)
+DELETE http://localhost:3001/api/comercios/B12345679 HTTP/1.1
+
+#### Borrado lógico
+DELETE http://localhost:3001/api/comercios/A98765430?logicalDelete=true HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJlMWE0ZjNkOWU1ZWRjNWU1NTRiZDYiLCJDSUYiOiJBOTg3NjU0MzAiLCJpYXQiOjE3MTQ2NDI3OTIsImV4cCI6MTc0NjIwMDM5Mn0.fj5V61S6gQtN39z6Ln8Hg8fMSbGkXSLyEdX7LvGOvRc
+
+### Borrado físico (por defecto) para un comercio quue no existe
+DELETE http://localhost:3001/api/comercios/Z98765432 HTTP/1.1
+
+### Borrado lógico para un comercio quue no existe
+DELETE http://localhost:3001/api/comercios/Z98765432?logicalDelete=true HTTP/1.1
+
+### Review de un comercio La Esquina del Sabor con scoring y review
+### Con permisos
+PATCH http://localhost:3001/api/comercios/review/A98765430 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNiMjdkNzg0MDRjODU0NjFmNTgwMmMiLCJyb2wiOlsidXNlciJdLCJpYXQiOjE3MTU1MDA0NTMsImV4cCI6MTc0NzA1ODA1M30.G9-o-FX2NNQUru0ZucvxSfH-Nmtr0Y-P6zbmv6U6ob8
+
+{   
+    "scoring": 4,
+    "review": "Me ha gustado mucho. Lo recomiendo"
+}
+
+### Sin permisos
+PATCH http://localhost:3001/api/comercios/review/A98765430 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjMzYWYwNjc2ZmZkMjRiZWVkMTliYWMiLCJyb2wiOlsidXNlciJdLCJpYXQiOjE3MTQ2NjMxODYsImV4cCI6MTc0NjIyMDc4Nn0.IsPxJqPvNTQTNjmdVsg0CRYIe9-GTEmaEOywxyomWs8
+
+{   
+    "scoring": 3.5,
+    "review": "Muy normal"
+}
+
+### Review de un comercio La Esquina del Sabor solo con scoring 
+### Con permisos
+PATCH http://localhost:3001/api/comercios/review/A98765430 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNiMjdkNzg0MDRjODU0NjFmNTgwMmMiLCJyb2wiOlsidXNlciJdLCJpYXQiOjE3MTU1MDA0NTMsImV4cCI6MTc0NzA1ODA1M30.G9-o-FX2NNQUru0ZucvxSfH-Nmtr0Y-P6zbmv6U6ob8
+
+{   
+    "scoring": 3.5
+}
+
+### Review de un comercio La Esquina del Sabor solo con review 
+### Sin permisos
+PATCH http://localhost:3001/api/comercios/review/A98765430 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjMzYWYwNjc2ZmZkMjRiZWVkMTliYWMiLCJyb2wiOlsidXNlciJdLCJpYXQiOjE3MTQ2NjMxODYsImV4cCI6MTc0NjIyMDc4Nn0.IsPxJqPvNTQTNjmdVsg0CRYIe9-GTEmaEOywxyomWs8
+
+{   
+    "review": "Muy normal"
+}
+
+###
+POST http://localhost:3001/api/comercios/fotos/A98765430 HTTP/1.1
+Content-Type: multipart/form-data; boundary=Boundry
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjMzYjJlMzFiMzJkYzBkYTU5YmQ2ZmUiLCJDSUYiOiJBOTg3NjU0MzAiLCJpYXQiOjE3MTQ2NjQxNjgsImV4cCI6MTc0NjIyMTc2OH0.gDVx78Zv_BqAEK71lhLQ7Q3tvqHoOQVtrDEU6l3ixbM
+
+--Boundry
+Content-Disposition: form-data; name="image"; filename="foto.jpg"
+Content-Type: image/jpg
+
+< ./foto.jpg
+--Boundry--

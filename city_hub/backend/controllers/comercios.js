@@ -241,8 +241,8 @@ const updateItem = async (req, res) => {
 
 /*
   FUNCION
-    deleteItem(req, res)
-    Borrar un comercio por su CIF, permitiendo elegir entre borrado lógico o físico.
+    deleteItemCommerce(req, res)
+    Borrar un comercio por su CIF, permitiendo con un borrado lógico.
     Parámetros:
       - req: Objeto de solicitud de Express
       - res: Objeto de respuesta de Express
@@ -250,14 +250,11 @@ const updateItem = async (req, res) => {
       - Envía los datos del comercio borrado como respuesta si la operación es exitosa. Si no se encuentra el comercio, envía una respuesta de error con código 404. 
         En caso de error, envía una respuesta de error con código 500.
 */
-const deleteItem = async (req, res) => {
+const deleteItemComercio = async (req, res) => {
     
     try {
         // Recuperamos el CIF de la URL
         const { _CIF } = matchedData(req)
-
-        // Verificamos si se ha solicitado que se haga un borrado lógico
-        const { logicalDelete } = req.query
         
         // Inicializamos la variabla data
         let data
@@ -270,20 +267,53 @@ const deleteItem = async (req, res) => {
             return handleHttpError(res, 'ERROR_DELETE_ITEM: No se encontró ningún comercio con el CIF proporcionado', 404) // Indicamos un mensaje así como el código de error
         }
 
-        // Si se ha solicitado un borrado lógico
-        if (logicalDelete) {
-            // Hacemos un softDelete, es decir en la BD lo marcamos como deleted
-            data = await comercioModel.delete({ CIF: _CIF }) 
-        } else {
-            // En caso contrario hacemos un borrado físico
-            data = await comercioModel.findOneAndDelete({ CIF: _CIF })
-        }
+        // Hacemos un softDelete, es decir en la BD lo marcamos como deleted
+        data = await comercioModel.delete({ CIF: _CIF }) 
 
         // Envaimos un confirmación del borrado y data
         res.send({ acknowledged: true, data })
     } catch (err) {
         handleHttpError(res, 'ERROR_DELETE_ITEM', 500)
     } 
+}
+
+/*
+  FUNCION
+  deleteItemCommerce(req, res)
+  Borrar un comercio por su CIF, permitiendo con un borrado lógico.
+  Parámetros:
+    - req: Objeto de solicitud de Express
+    - res: Objeto de respuesta de Express
+  Return:
+    - Envía los datos del comercio borrado como respuesta si la operación es exitosa. Si no se encuentra el comercio, envía una respuesta de error con código 404. 
+      En caso de error, envía una respuesta de error con código 500.
+*/
+const deleteItemAdmin = async (req, res) => {
+
+try {
+    // Recuperamos el CIF de la URL
+    const { _CIF } = matchedData(req)
+    
+    // Inicializamos la variabla data
+    let data
+    
+    // Buscamos si el CIF (_CIF) proporcionado coincide con alguno en la BD
+    data = await comercioModel.findOne({ CIF:_CIF }) // Como en la BD el campo se llama CIF, indicamos que compare CIF con nuestra varible _CIF
+    
+    // Comprobamos si data es undefined
+    if (!data) {
+        return handleHttpError(res, 'ERROR_DELETE_ITEM: No se encontró ningún comercio con el CIF proporcionado', 404) // Indicamos un mensaje así como el código de error
+    }
+
+    // Hacemos un borrado físico
+    data = await comercioModel.deleteOne({ CIF: _CIF }) 
+
+    // Envaimos un confirmación del borrado y data
+    res.send({ acknowledged: true, data })
+
+} catch (err) {
+    handleHttpError(res, 'ERROR_DELETE_ITEM', 500)
+} 
 }
 
 /*
@@ -441,8 +471,21 @@ const reviewItem = async (req, res) => {
     }
 }
 
+
+/*
+  FUNCION
+    createFile(req, res)
+    Publicar una foto de un comercio existente por su CIF.
+    Parámetros:
+      - req: Objeto de solicitud de Express
+      - res: Objeto de respuesta de Express
+    Return:
+      - Envía los datos del fichero subido como respuesta si la operación es exitosa. Si no se encuentra el comercio, envía una respuesta de error con código 404. 
+        En caso de error, envía una respuesta de error con código 500.
+*/
 const createFile = async (req, res) => {
   try {
+
     // Recuperamos el CIF
     const { _CIF } = matchedData(req)
 
@@ -487,4 +530,4 @@ const createFile = async (req, res) => {
 }
 
 
-module.exports = { getItems, getItem, getItemActivity, getItemCity, createItem, updateItem, uploadInfoItem,  deleteItem, loginItem, reviewItem, createFile }
+module.exports = { getItems, getItem, getItemActivity, getItemCity, createItem, updateItem, uploadInfoItem,  deleteItemComercio, deleteItemAdmin, loginItem, reviewItem, createFile }

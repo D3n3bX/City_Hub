@@ -26,16 +26,11 @@ const checkCIF = (req, res, next) => {
         // Recuperamos el CIF de la URL
         const { _CIF } = matchedData(req)
 
-        console.log(_CIF)
-
         // Recuperamos el comercio del middleware de autenticación
         const tokComercio = req.comercio
 
-        console.log(tokComercio)
         // Recuperamos el CIF del token
         const tokCIF = tokComercio.CIF
-
-        console.log(tokCIF)
 
         // Comprobamos que el _CIF de la URL y el tokCIF (CIF del token) no coinciden
         if (_CIF != tokCIF) {

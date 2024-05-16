@@ -10,7 +10,7 @@
 // Librerias
 const express = require('express')
 // Módulos propios
-const { getItems, getItem, getItemActivity, getItemCity, createItem, updateItem, uploadInfoItem, deleteItem, loginItem, reviewItem, createFile } = require('../controllers/comercios')
+const { getItems, getItem, getItemActivity, getItemCity, createItem, updateItem, uploadInfoItem, deleteItemComercio, deleteItemAdmin, loginItem, reviewItem, createFile } = require('../controllers/comercios')
 const { validatorLogin, validatorCreateItem, validatorGetItem, validatorGetItemActivity, validatorGetItemCity, validatorModifyItem, validatorUploadInfoItem, validatorUploadReviewItem } = require('../validators/comercios')
 const authComercioMidleware  = require('../middleware/sessionComercio')
 const authUserMiddleware = require('../middleware/sessionUser')
@@ -265,7 +265,7 @@ routerComercios.patch('/:_CIF', authComercioMidleware, validatorGetItem, checkCI
 routerComercios.patch('/info/:_CIF', authComercioMidleware, validatorGetItem, checkCIF, validatorUploadInfoItem, uploadInfoItem) // Indicamos la URL, vamos al validator y al controller
 
 
-// Borrar un comercio a partir de su CIF, y permite elegir entre un borrado lógico o físico (vía parámetro query)
+// Borrar un comercio a partir de su CIF con un borrado lógico
 // Necesitamos el validador para comprobar que el CIF es correcto
 // El CIF lo indicamos como _CIF para no confundirlo con el nombre de CIF de la BD
 /**
@@ -275,14 +275,14 @@ routerComercios.patch('/info/:_CIF', authComercioMidleware, validatorGetItem, ch
  *    tags:
  *    - Comercio
  *    summary: 'Borrar comercio'
- *    description: Borrar un comercio por el CIF
+ *    description: Borrar un comercio con borrado lógico por el CIF (Comercio)
  *    parameters:
  *       - in: path
  *         name: _CIF
  *         required: true
  *         schema:
  *           type: string
- *         description: CIF del comercio a borrar
+ *         description: CIF del comercio a borrar con borrado lógico
  *    requestBody:
  *      content:
  *        application/json:
@@ -298,7 +298,42 @@ routerComercios.patch('/info/:_CIF', authComercioMidleware, validatorGetItem, ch
  *    security:
  *      - bearerAuth: []
  */
-routerComercios.delete('/:_CIF', authComercioMidleware, validatorGetItem, checkCIF, deleteItem) // Indicamos la URL, vamos al validador y al controller
+routerComercios.delete('/:_CIF', authComercioMidleware, validatorGetItem, checkCIF, deleteItemComercio) // Indicamos la URL, vamos al validador y al controller
+
+// Borrar un comercio a partir de su CIF con un borrado físico
+// Necesitamos el validador para comprobar que el CIF es correcto
+// El CIF lo indicamos como _CIF para no confundirlo con el nombre de CIF de la BD
+/**
+ * @openapi
+ * /api/comercios/admin/:_CIF:
+ *  delete:
+ *    tags:
+ *    - Comercio
+ *    summary: 'Borrar comercio'
+ *    description: Borrar un comercio con borrado fisico por el CIF (Admin)
+ *    parameters:
+ *       - in: path
+ *         name: _CIF
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: CIF del comercio a borrar con borrado físico
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *                  schema:
+ *                    $ref: '#/components/schemas/obtenerComercio'
+ *    responses:
+ *      '200':
+ *       description: Returns the inserted object
+ *      '404':
+ *       description: Comercio no encontrado
+ *      '500':
+ *       description: Error interno del servidor
+ *    security:
+ *      - bearerAuth: []
+ */
+routerComercios.delete('/admin/:_CIF', authUserMiddleware, checkRol('admin'), validatorGetItem, deleteItemComercio) // Indicamos la URL, vamos al validador y al controller
 
 // Subir una review un comercio a partir de su CIF
 // Necesitamos el validador para comprobar que los datos pasados son correctos

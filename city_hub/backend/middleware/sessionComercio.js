@@ -46,7 +46,7 @@ const authComercioMiddleware = async (req, res, next) => {
 
         // Buscamos al comercio correspondiente al id
         const comercio = await comercioModel.findById(dataToken._id)
-        
+ 
         // Establecemos el comercio en la solicitud para uso posterior
         req.comercio = comercio
         

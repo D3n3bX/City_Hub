@@ -3,7 +3,8 @@
 ### Registrar comercio -> Admin -> token de Admin (HECHO)
 ### Iniciar sesión comercio -> token de Comercio (HECHO)
 ### Modifcar info comercio -> Comercio -> token de Comercio (HECHO)
-### Borrar comercio -> Comercio -> token de Comercio (HECHO)
+### Borrar comercio con borrado lógico -> Comercio -> token de Comercio (HECHO)
+### Borrar comercio con borrado físico -> Admin -> token de Admin (HECHO)
 ### Subir título, resumen, texto y/o fotos comercio -> Comercio -> token de Comercio -> (HECHO) -> excepto fotos
 ### Subir valoración y opinión comercio -> User -> token de User (HECHO)
 ### Buscar comercio por CIF -> (HECHO)
@@ -128,12 +129,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjMzYjJlM
 }
 
 ### Borrar un comercio a partir de su CIF, y permite elegir entre un borrado lógico o físico (vía parámetro query)
-### Borrado físico (por defecto)
-DELETE http://localhost:3001/api/comercios/B12345679 HTTP/1.1
+### Borrado físico (Admin)
+DELETE http://localhost:3001/api/comercios/admin/B12345679 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJkNDRjMjEwMTM0Yjk0ZGRiZTQ0N2MiLCJyb2wiOlsiYWRtaW4iXSwiaWF0IjoxNzE0Mjk3MDg0LCJleHAiOjE3NDU4NTQ2ODR9.dKRTE0oI6xW49u5l4qBIoOwyJtEQwyWJA7krgIuqVBM
 
-#### Borrado lógico
-DELETE http://localhost:3001/api/comercios/A98765430?logicalDelete=true HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJlMWE0ZjNkOWU1ZWRjNWU1NTRiZDYiLCJDSUYiOiJBOTg3NjU0MzAiLCJpYXQiOjE3MTQ2NDI3OTIsImV4cCI6MTc0NjIwMDM5Mn0.fj5V61S6gQtN39z6Ln8Hg8fMSbGkXSLyEdX7LvGOvRc
+#### Borrado lógico (Comercio)
+DELETE http://localhost:3001/api/comercios/A98765430 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjMzYjJlMzFiMzJkYzBkYTU5YmQ2ZmUiLCJDSUYiOiJBOTg3NjU0MzAiLCJpYXQiOjE3MTU4NTI0NTEsImV4cCI6MTc0NzQxMDA1MX0.EOeWb0SF4AqxhfpUIiALUwRDO2lqVEzXM3M1JZUvj84
 
 ### Borrado físico (por defecto) para un comercio quue no existe
 DELETE http://localhost:3001/api/comercios/Z98765432 HTTP/1.1
